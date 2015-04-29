@@ -1,0 +1,50 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url 'https://repo.spring.io/libs-release' }
+    }
+    dependencies {
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'groovy'
+    id 'maven'
+    id 'idea'
+}
+
+apply plugin: 'spring-boot'
+
+sourceCompatibility = 1.8
+version = '1.0'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url 'http://dl.bintray.com/readytalk/maven' }
+}
+
+dependencies {
+    compile 'com.readytalk:metrics3-statsd:4.1.0'
+    compile ('com.ryantenney.metrics:metrics-spring:3.0.4') { //3.1.0-SNAPSHOT') {
+        exclude group: 'com.codahale.metrics'
+        exclude group: 'org.springframework'
+    }
+    compile 'io.dropwizard.metrics:metrics-core:3.1.1'
+    compile 'io.dropwizard.metrics:metrics-annotation:3.1.1'
+    compile 'io.dropwizard.metrics:metrics-healthchecks:3.1.1'
+    compile 'org.springframework.boot:spring-boot-starter-web:1.2.3.RELEASE'
+    compile 'org.springframework:spring-aspects:4.1.5.RELEASE'
+    compile 'org.springframework:spring-context-support:4.1.6.RELEASE'
+    compile 'org.codehaus.groovy:groovy-all:2.4.3:indy'
+    compile 'net.logstash.logback:logstash-logback-encoder:4.2'
+
+}
+
+//invokedynamic support
+tasks.withType(GroovyCompile) {
+    groovyOptions.optimizationOptions.indy = true
+}
